@@ -1,0 +1,56 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: bisque;
+  position: relative;
+}
+
+.map-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(106, 1fr);
+  height: 600px;
+  background-color: aquamarine;
+}
+
+.stack-top {
+  z-index: 9;
+  outline: 0.5px solid black;
+}
+
+.greenish {
+  background-color: green;
+}
+.deep-sea {
+  background-color: rgb(52, 89, 235);
+}
+.sea {
+  background-color: rgb(52, 146, 235);
+}
+.sand {
+  background-color: rgb(242, 242, 39);
+}
+.hard-sand {
+  background-color: rgb(222, 200, 35);
+}
+.terracota {
+  background-color: rgb(222, 150, 35);
+}
+.dirt1 {
+  background-color: rgb(171, 112, 17);
+}
+.dirt2 {
+  background-color: rgb(133, 84, 5);
+}
+.dirt3 {
+  background-color: rgb(102, 59, 6);
+}
+.rock {
+  background-color: rgb(61, 36, 6);
+}
+.rock-solid {
+  background-color: black;
+}
