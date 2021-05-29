@@ -15,4 +15,6 @@ export default class Unit {
     map[x][y].div.style.backgroundImage = `url('${this.image}')`;
     map[x][y].div.unitInside = this;
   }
+
+  movingAcross(map, destination) {}
 }
