@@ -1,11 +1,16 @@
 export default class Square {
+  containter = document.getElementById("container");
   constructor(x, y, t) {
     this.x = x;
     this.y = y;
     this.topography = t;
     (this.div = this.divCreation()), this.blockColor();
+    this.containter.appendChild(this.div);
+    // this.div.addEventListener("click", () => {
+    //   checkOutline(this.div);
+    // });
     // this.blockColor();
-    [];
+    // [];
   }
 
   divCreation() {

@@ -1,0 +1,4 @@
+vrei sa dai upload la un fisier existent 
+git add nume fisier
+git commit -m "cv mesaj"
+git push origin master

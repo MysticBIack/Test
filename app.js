@@ -4,7 +4,6 @@ import Unit from "./Unit.js";
 
 const unitNameP = document.getElementById("unitName");
 const unitIDP = document.getElementById("unitID");
-const containter = document.getElementById("container");
 const infoBoard = document.getElementById("InfoBoard");
 
 const infoBoardDim = {
@@ -37,7 +36,6 @@ for (let i = 0; i < map.length; i++) {
     map[i][j].div.addEventListener("click", () => {
       checkOutline(map[i][j]);
     });
-    containter.appendChild(map[i][j].div);
   }
 }
 
