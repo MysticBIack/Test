@@ -1,12 +1,17 @@
 export default class Unit {
-  constructor(x, y) {
-    this.name = "Alex";
-    this.id = "sasdadsd";
+  constructor(x, y, name, map) {
+    this.name = name;
+    this.id = this.generateRandomID();
     this.image = "./soldier.png";
     this.coordinates = {
       x: x,
       y: y,
     };
+    this.appendUnitToMap(map);
+  }
+
+  generateRandomID() {
+    return Math.random().toString(36).substr(2, 9);
   }
 
   appendUnitToMap(map) {

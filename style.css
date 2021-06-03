@@ -13,20 +13,36 @@ body {
   display: grid;
   grid-template-columns: repeat(70, 15px);
   height: 600px;
-  /* background-color: aquamarine; */
+  width: 1050px;
 }
 
 .unitInfo {
+  position: absolute;
   margin: 0;
   padding: 0;
   background-color: rgb(236, 227, 217);
   height: 100px;
   width: 300px;
   font-size: 20px;
+  display: block;
+  top: 91px; /*urmeaza scos */
+  left: 129px; /*urmeaza scos */
+  opacity: 0.7;
+}
+
+.centerAllignment {
+  position: fixed; /* or absolute */
+  top: 50%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+  margin-top: -300px;
+  margin-left: -525px;
+  z-index: -1;
 }
 
 .centerAllign {
   text-align: center;
+  justify-content: center;
 }
 
 div {

@@ -4,6 +4,15 @@ import Unit from "./Unit.js";
 
 const unitNameP = document.getElementById("unitName");
 const unitIDP = document.getElementById("unitID");
+const containter = document.getElementById("container");
+const infoBoard = document.getElementById("InfoBoard");
+
+const infoBoardDim = {
+  height: infoBoard.offsetHeight,
+  width: infoBoard.offsetWidth,
+};
+infoBoard.style.display = "none";
+
 var pn = new Perlin("ve");
 
 let prev = null;
@@ -25,8 +34,7 @@ for (let i = 0; i < map.length; i++) {
       j,
       pn.noise((i * 5) / map.length - 0.4, (j * 5) / map[i].length - 0.4, 0)
     );
-    let containter = document.getElementById("container");
-    map[i][j].div.addEventListener("click", (e) => {
+    map[i][j].div.addEventListener("click", () => {
       checkOutline(map[i][j]);
     });
     containter.appendChild(map[i][j].div);
@@ -38,16 +46,52 @@ document.addEventListener("click", (e) => {
     let theClickedDiv = e.target;
     if (!theClickedDiv.unitInside || theClickedDiv.unitInside.length === 0) {
       theClickedDiv.unitInside = [];
-      unitNameP.innerHTML = "No unit selected";
-      console.log(theClickedDiv.unitInside);
+      removeUnitInfoPopUp();
     } else if (theClickedDiv.unitInside) {
-      let unitInfo = theClickedDiv.unitInside;
-      unitNameP.innerHTML = "Name: " + unitInfo.name;
-      unitIDP.innerHTML = "ID: " + unitInfo.id;
-      console.log(theClickedDiv.unitInside);
+      if (theClickedDiv.classList.contains("stack-top")) {
+        //if you want to deselect the unit that was already selected
+        unitInfoPopUp(e.clientX, e.clientY, theClickedDiv.unitInside);
+      } else removeUnitInfoPopUp();
     }
+  } else {
+    removeUnitInfoPopUp();
+    prev.div.classList.remove("stack-top");
   }
 });
 
-let firstUnit = new Unit(2, 2);
-firstUnit.appendUnitToMap(map);
+let firstUnit = new Unit(2, 2, "Alex", map);
+let secondUnit = new Unit(5, 2, "Bob", map);
+let thirdUnit = new Unit(2, 4, "Ubi", map);
+let testUnit = new Unit(46, 0, "PopUpTest", map); //delete
+let testUnit1 = new Unit(0, 69, "PopUpTest", map); //delete
+let testUnit2 = new Unit(49, 69, "PopUpTest", map); //delete
+let testUnit3 = new Unit(0, 0, "PopUpTest", map); //delete
+
+function removeUnitInfoPopUp() {
+  infoBoard.style.display = "none";
+}
+
+function unitInfoPopUp(mouseX, mouseY, theUnit) {
+  unitNameP.innerHTML = "Name: " + theUnit.name;
+  unitIDP.innerHTML = "ID: " + theUnit.id;
+  checkIfInWindow(mouseX, mouseY);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      infoBoard.style.display = "none";
+    }
+  });
+}
+
+function checkIfInWindow(mouseX, mouseY) {
+  if (mouseX + infoBoardDim.width > window.innerWidth - 20) {
+    infoBoard.style.left = `${mouseX - 10 - infoBoardDim.width}px`;
+  } else {
+    infoBoard.style.left = `${mouseX + 10}px`;
+  }
+  if (mouseY + infoBoardDim.height > window.innerHeight - 20) {
+    infoBoard.style.top = `${mouseY - 10 - infoBoardDim.height}px`;
+  } else {
+    infoBoard.style.top = `${mouseY + 10}px`;
+  }
+  infoBoard.style.display = "block";
+}
