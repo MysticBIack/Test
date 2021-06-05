@@ -1,3 +1,4 @@
+import Grid from "./Astar.js";
 export default class Unit {
   constructor(x, y, name, map) {
     this.name = name;
@@ -7,19 +8,46 @@ export default class Unit {
       x: x,
       y: y,
     };
-    this.appendUnitToMap(map);
+    this.map = map;
+    this.appendUnitToMap();
   }
 
   generateRandomID() {
     return Math.random().toString(36).substr(2, 9);
   }
 
-  appendUnitToMap(map) {
+  appendUnitToMap() {
     let x = this.coordinates.x;
     let y = this.coordinates.y;
-    map[x][y].div.style.backgroundImage = `url('${this.image}')`;
-    map[x][y].div.unitInside = this;
+    this.map[x][y].div.style.backgroundImage = `url('${this.image}')`;
+    this.map[x][y].div.unitInside = this;
   }
 
-  movingAcross(map, destination) {}
+  async movingAcross(coords) {
+    let endCoords = {
+      x: coords[0],
+      y: coords[1],
+    };
+    let width = this.map[0].length;
+    let height = this.map.length;
+    const grid = new Grid(this.coordinates, endCoords, width, height);
+    const directions = grid.astar(this.coordinates, endCoords);
+    for (let [x, y] of directions) {
+      this.update(x, y);
+      await sleep(100);
+    }
+  }
+
+  update(targetX, targetY) {
+    this.map[targetX][targetY].div.style.backgroundImage = `url('${this.image}')`;
+    this.map[targetX][targetY].div.unitInside = this;
+    this.map[this.coordinates.x][this.coordinates.y].div.style.backgroundImage = "none";
+    this.map[this.coordinates.x][this.coordinates.y].div.unitInside = [];
+    this.coordinates.x = targetX;
+    this.coordinates.y = targetY;
+  }
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

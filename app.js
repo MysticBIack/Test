@@ -2,9 +2,13 @@ import Perlin from "./Perlin.js";
 import Square from "./Square.js";
 import Unit from "./Unit.js";
 
+const mapContainer = document.getElementById("container");
 const unitNameP = document.getElementById("unitName");
 const unitIDP = document.getElementById("unitID");
 const infoBoard = document.getElementById("InfoBoard");
+const walkButton = document.getElementById("WalkButton");
+
+walkButton.onclick = walking;
 
 const infoBoardDim = {
   height: infoBoard.offsetHeight,
@@ -48,11 +52,13 @@ document.addEventListener("click", (e) => {
     } else if (theClickedDiv.unitInside) {
       if (theClickedDiv.classList.contains("stack-top")) {
         //if you want to deselect the unit that was already selected
-        unitInfoPopUp(e.clientX, e.clientY, theClickedDiv.unitInside);
+        let actualUnit = theClickedDiv.unitInside;
+        console.log(actualUnit);
+        unitInfoPopUp(e.clientX, e.clientY, actualUnit);
       } else removeUnitInfoPopUp();
     }
   } else {
-    removeUnitInfoPopUp();
+    // removeUnitInfoPopUp();
     prev.div.classList.remove("stack-top");
   }
 });
@@ -70,6 +76,7 @@ function removeUnitInfoPopUp() {
 }
 
 function unitInfoPopUp(mouseX, mouseY, theUnit) {
+  infoBoard.unit = theUnit;
   unitNameP.innerHTML = "Name: " + theUnit.name;
   unitIDP.innerHTML = "ID: " + theUnit.id;
   checkIfInWindow(mouseX, mouseY);
@@ -92,4 +99,34 @@ function checkIfInWindow(mouseX, mouseY) {
     infoBoard.style.top = `${mouseY + 10}px`;
   }
   infoBoard.style.display = "block";
+}
+
+function walking(e) {
+  let unit = e.path[1].unit; //delete
+  let doesItGoToClick = true; //delete
+
+  window.addEventListener("keydown", onKeyDown, { once: true });
+
+  mapContainer.addEventListener("click", onClick, { once: true });
+}
+
+function onKeyDown(e) {
+  if (e.key === "Escape")
+    mapContainer.removeEventListener("click", onClick, { once: true });
+}
+
+function onClick(e) {
+  console.log(infoBoard.unit); //delete
+  const targetDiv = e.path[0];
+  let targetDivCoord = targetDiv.id.split(",").map((char) => {
+    return parseInt(char);
+  });
+  console.log(targetDivCoord); //delete
+  if (!targetDiv.unitInside || targetDiv.unitInside.length === 0) {
+    infoBoard.unit.movingAcross(targetDivCoord);
+  } else {
+    alert("Already has unit inside");
+  }
+
+  window.removeEventListener("keydown", onKeyDown, { once: true });
 }
