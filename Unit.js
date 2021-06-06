@@ -21,16 +21,17 @@ export default class Unit {
     let y = this.coordinates.y;
     this.map[x][y].div.style.backgroundImage = `url('${this.image}')`;
     this.map[x][y].div.unitInside = this;
+    this.map[x][y].occupied = true;
   }
 
-  async movingAcross(coords) {
+  async movingAcross(coords, map) {
     let endCoords = {
       x: coords[0],
       y: coords[1],
     };
     let width = this.map[0].length;
     let height = this.map.length;
-    const grid = new Grid(this.coordinates, endCoords, width, height);
+    const grid = new Grid(this.coordinates, endCoords, width, height, map);
     const directions = grid.astar(this.coordinates, endCoords);
     for (let [x, y] of directions) {
       this.update(x, y);
@@ -39,10 +40,12 @@ export default class Unit {
   }
 
   update(targetX, targetY) {
+    this.map[targetX][targetY].occupied = true;
     this.map[targetX][targetY].div.style.backgroundImage = `url('${this.image}')`;
     this.map[targetX][targetY].div.unitInside = this;
     this.map[this.coordinates.x][this.coordinates.y].div.style.backgroundImage = "none";
     this.map[this.coordinates.x][this.coordinates.y].div.unitInside = [];
+    this.map[this.coordinates.x][this.coordinates.y].occupied = false;
     this.coordinates.x = targetX;
     this.coordinates.y = targetY;
   }

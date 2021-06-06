@@ -123,7 +123,7 @@ function onClick(e) {
   });
   console.log(targetDivCoord); //delete
   if (!targetDiv.unitInside || targetDiv.unitInside.length === 0) {
-    infoBoard.unit.movingAcross(targetDivCoord);
+    infoBoard.unit.movingAcross(targetDivCoord, map);
   } else {
     alert("Already has unit inside");
   }

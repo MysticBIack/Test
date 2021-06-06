@@ -30,8 +30,10 @@ export default class Square {
       this.div.classList.add("greenish");
     } else if (this.topography <= 0.26) {
       this.div.classList.add("deep-sea");
+      this.type = "water";
     } else if (this.topography <= 0.3) {
       this.div.classList.add("sea");
+      this.type = "water";
     } else if (this.topography <= 0.37) {
       this.div.classList.add("sand");
     } else if (this.topography <= 0.425) {

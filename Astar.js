@@ -1,6 +1,7 @@
 export default class Grid {
-  constructor(start, end, w, h) {
+  constructor(start, end, w, h, map) {
     this.init(w, h);
+    this.unitCollision = map;
     this.startNode = this.node[start.x][start.y];
     this.endNode = this.node[end.x][end.y];
     this.neighbours = [
@@ -52,9 +53,10 @@ export default class Grid {
       for (let [x, y] of this.neighbours) {
         let i = current.x + x;
         let j = current.y + y;
-        let tentative_gScore = current.gScore;
         if (i >= 0 && i < this.height && j >= 0 && j < this.width) {
           let neighbour = this.node[i][j];
+          let tentative_gScore =
+            current.gScore + neighbour.checkForUnit(this.unitCollision[i][j]);
           if (tentative_gScore < neighbour.gScore) {
             cameFrom.set(neighbour, current);
             neighbour.gScore = tentative_gScore;
@@ -85,6 +87,13 @@ class Node {
     this.fScore = Number.MAX_SAFE_INTEGER;
     this.x = x;
     this.y = y;
+  }
+
+  checkForUnit(block) {
+    //if unit is inside the block or the block is water it will go around
+    if (block.occupied || block.type === "water") {
+      return Number.MAX_SAFE_INTEGER;
+    } else return 0;
   }
 }
 
